@@ -55,10 +55,52 @@ console.group('4. Parašykite funkciją,  kuri pirmu parametru priima string | n
 console.groupEnd();
 console.group('5. Parašykite funkciją, kuri sujungia tokių pat tipų masyvus į vieną masyvą');
 {
+    const solution = (arr1, arr2) => {
+        return [...arr1, ...arr2];
+    };
+    const oneArrNumber = [7, 9, 10];
+    const twoArrNumber = [15, 75, 69];
+    const resultsNumber = solution(oneArrNumber, twoArrNumber);
+    const oneArrString = ['55', 'HOLA', 'they call me by...Tim..'];
+    const twoArrString = ['caterpillar', 'OSRS', 'Yknow, I was an amazing man once'];
+    const resultsString = solution(oneArrString, twoArrString);
+    console.log({
+        WithNumbers: resultsNumber,
+        WithString: resultsString,
+    });
 }
 console.groupEnd();
-console.group('6. Parašykite funkciją, kuri priimtų bet kokią reikšmę ir grąžintų objektą su savybėmis-funkcijomis "setValue" - reikšmei nustatyti ir "getValue" tai reikšmei nustatyti. Funkcijai perduota reikšmė neturi būti pasiekiama tiesiogiai.');
+console.group('6. Parašykite funkciją, kuri priimtų bet kokią reikšmę ir grąžintų objektą su savybėmis-funkcijomis "setValue" - reikšmei nustatyti ir "getValue" tai reikšmei gauti. Funkcijai perduota reikšmė neturi būti pasiekiama tiesiogiai.');
 {
+    const solution = (initialValue) => {
+        let value = initialValue;
+        return {
+            setValue: (newValue) => value = newValue,
+            getValue: () => value,
+        };
+    };
+    const value1 = 7;
+    const value2 = ["Sidnius", "Mauricijus", "Penktasis"];
+    const value3 = { name: 'Fanatijus', surname: 'Labdara' };
+    const obj1 = solution(value1);
+    const obj2 = solution(value2);
+    const obj3 = solution(value3);
+    console.log('initial values');
+    console.log({
+        value1: obj1.getValue(),
+        value2: obj2.getValue(),
+        value3: obj3.getValue(),
+    });
+    console.log('changing values...');
+    obj1.setValue(9);
+    obj2.setValue(['Pakeista']);
+    obj3.setValue({ name: 'Pakaitalas', surname: 'Fuflo' });
+    console.log({
+        value1: obj1.getValue(),
+        value2: obj2.getValue(),
+        value3: obj3.getValue(),
+    });
+    console.log(obj1.getValue());
 }
 console.groupEnd();
 console.group(`
@@ -66,6 +108,29 @@ console.group(`
   Parašykite 2 funkcijas <isStudent> ir <isWorker> skirtas atpažinti koks objektas buvo perduotas.
   Sukūrę tokias funkcijas iteruokite per žmonių masyvą, sugrupuodami elementus pagal tipą`);
 {
+    const isStudent = (person) => {
+        return person.university !== undefined;
+    };
+    const isWorker = (person) => {
+        return person.avgMonthlyPay !== undefined;
+    };
+    const solution = (ppl) => {
+        const newGroup = ppl.reduce((prevGroup, person) => {
+            const CopiedArrPpl = { ...prevGroup };
+            if (isStudent(person))
+                CopiedArrPpl.students.push(person);
+            if (isWorker(person))
+                CopiedArrPpl.workers.push(person);
+            if (isStudent(person) && isWorker(person) !== true)
+                CopiedArrPpl.people.push(person);
+            return CopiedArrPpl;
+        }, {
+            people: [],
+            students: [],
+            workers: [],
+        });
+        return newGroup;
+    };
     const people = [
         { name: 'Atstovė', surname: 'Galtokaitė', university: 'VU', course: 2 },
         { name: 'Kurpius', surname: 'Medainis' },
@@ -76,5 +141,9 @@ console.group(`
         { name: 'Šidelė', surname: 'Gyslovienė', avgMonthlyPay: 1500 },
         { name: 'Užuodauskas', surname: 'Perrašimauskas', university: 'VGTU', course: 1 },
     ];
+    const results = solution(people);
+    console.log(results);
+    const students = isStudent(people[1]);
+    console.log(students);
 }
 //# sourceMappingURL=main.js.map
